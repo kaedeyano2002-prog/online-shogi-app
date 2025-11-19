@@ -1,11 +1,20 @@
 // server.js (ロビー機能の核となる部分の完全版)
 
 const express = require('express');
+const path = require('path'); // 【追加】
 const http = require('http');
 const { Server } = require('socket.io');
 
 const app = express();
 const server = http.createServer(app);
+
+// 【修正】'public' フォルダを静的ファイルとして公開
+app.use(express.static(path.join(__dirname, 'public'))); 
+
+// 【修正】ルート（/）へのGETリクエストが来たら public フォルダ内の index.html を返す
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
 // ⚠️ CORS設定は開発環境に合わせて調整してください
 const io = new Server(server, { cors: { origin: "*", methods: ["GET", "POST"] } }); 
 
