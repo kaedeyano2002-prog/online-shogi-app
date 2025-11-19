@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>将棋Webアプリ - 対戦待ち</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    
+    <div id="lobby-container">
+        <h2>🎯 対戦ロビー <span id="my-name"></span></h2>
+
+        <div id="time-selection">
+            <h3>持ち時間希望</h3>
+            <select id="time-limit-select">
+                <option value="10min">10分</option>
+                <option value="5min">5分</option>
+                <option value="3min">3分</option>
+                <option value="1min">1分</option>
+            </select>
+            <button id="set-time-button">希望をセット</button>
+            <p class="note">※ 持ち時間は対戦相手の希望が採用されます。</p>
+        </div>
+
+        <hr>
+        
+        <h3>🚀 対戦可能なプレイヤー</h3>
+        <div id="player-list">
+            </div>
+    </div>
+    
+    <div id="invite-dialog" style="display: none;">
+        <p id="invite-message">...</p>
+        <button id="accept-invite">承諾 (自分の希望時間を採用)</button>
+        <button id="reject-invite">拒否</button>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="lobby.js"></script>
+    <script src="game.js"></script>
+</body>
+</html>

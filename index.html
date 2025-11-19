@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <title>オンライン将棋 - ロビー</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f4f4; margin: 0; padding: 20px; }
+        .container { max-width: 800px; margin: 0 auto; background-color: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }
+        h1 { color: #333; border-bottom: 2px solid #ddd; padding-bottom: 10px; margin-bottom: 20px; }
+        h2 { color: #555; margin-top: 25px; border-left: 5px solid #007bff; padding-left: 10px; }
+        
+        /* プレイヤー設定エリア */
+        .player-settings, .lobby-list-area { margin-bottom: 30px; padding: 20px; border: 1px solid #e0e0e0; border-radius: 6px; }
+        .player-settings label, .player-settings button { margin-right: 10px; }
+        #my-name { font-weight: bold; color: #007bff; }
+        
+        /* ロビーリスト */
+        #lobby-list { list-style: none; padding: 0; }
+        #lobby-list li { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 10px 0; 
+            border-bottom: 1px dotted #ccc; 
+        }
+        #lobby-list li:last-child { border-bottom: none; }
+        .time-limit { color: #888; font-size: 0.9em; margin-left: 10px; }
+        
+        /* ボタン */
+        button { 
+            background-color: #28a745; 
+            color: white; 
+            border: none; 
+            padding: 5px 10px; 
+            text-align: center; 
+            text-decoration: none; 
+            display: inline-block; 
+            font-size: 14px; 
+            margin: 4px 2px; 
+            cursor: pointer; 
+            border-radius: 4px; 
+            transition: background-color 0.3s;
+        }
+        button:hover:not(:disabled) { background-color: #218838; }
+        button:disabled { background-color: #ccc; cursor: not-allowed; }
+
+        /* 招待ダイアログ */
+        #invite-dialog {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #ffeeba;
+            border: 1px solid #ffc107;
+            padding: 25px;
+            border-radius: 8px;
+            z-index: 1000;
+            text-align: center;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+        #invite-dialog button { margin: 10px; padding: 10px 15px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="invite-dialog">
+            </div>
+
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="lobbyLogic.js"></script> 
+    </body>
+</html>

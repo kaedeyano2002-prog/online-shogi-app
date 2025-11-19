@@ -1,0 +1,312 @@
+/* style.css */
+body {
+    font-family: sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    background-color: #f0f0f0;
+    flex-direction: column; 
+}
+
+/* --- トップ画面スタイル --- */
+#start-screen {
+    text-align: center;
+}
+
+#start-button {
+    padding: 15px 30px;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+/* --- ロビー画面スタイル --- */
+
+#lobby-container {
+    width: 400px;
+    background-color: #fff;
+    padding: 20px;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#role-selection {
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #eee;
+}
+
+#role-selection button {
+    margin: 5px;
+    padding: 8px 15px;
+    cursor: pointer;
+}
+
+#role-selection button.selected {
+    background-color: #a0c4ff;
+    color: white;
+    font-weight: bold;
+}
+
+#player-list {
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    padding: 10px;
+}
+
+.lobby-player {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px dotted #eee;
+}
+
+.invite-button {
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+/* --- 招待ダイアログのスタイル --- */
+#invite-dialog {
+    border: 2px solid #ffaa00; 
+    position: fixed; 
+    top: 50%; 
+    left: 50%; 
+    transform: translate(-50%, -50%); 
+    background: #fff3e0; 
+    padding: 30px; 
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4); 
+    z-index: 2000;
+    text-align: center;
+}
+
+#invite-dialog button {
+    margin-top: 15px;
+    padding: 10px 20px;
+    font-size: 16px;
+}
+
+/* --- ゲーム盤のスタイル --- */
+#shogi-board {
+    display: grid;
+    grid-template-columns: repeat(9, 40px);
+    grid-template-rows: repeat(9, 40px);
+    border: 3px solid #333; 
+    background-color: #f7e6c4; 
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+.square {
+    width: 40px;
+    height: 40px;
+    border: 1px solid #333; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+/* 駒のスタイル */
+.piece {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    user-select: none;
+    border-bottom: 3px solid transparent; 
+}
+
+/* 成駒のスタイル */
+.piece[style*="竜"], .piece[style*="馬"], .piece[style*="全"], 
+.piece[style*="圭"], .piece[style*="杏"], .piece[style*="と"],
+.piece[style*="龍"], .piece[style*="馬"], .piece[style*="全"], 
+.piece[style*="圭"], .piece[style*="杏"], .piece[style*="と"] {
+    color: darkred !important; 
+    border-bottom: 3px solid darkred;
+}
+
+
+.piece.player1 {
+    transform: rotate(0deg);
+}
+
+.piece.player2 {
+    transform: rotate(180deg);
+}
+
+/* 駒の選択時のハイライト */
+.square.selected {
+    background-color: #ffcc66; 
+}
+
+/* 移動可能なマス目のハイライト */
+.square.possible-move {
+    background-color: #90ee90; 
+}
+
+/* --- 持ち駒エリアのスタイル --- */
+.hand-area {
+    width: 366px; 
+    min-height: 40px; 
+    padding: 5px 10px; 
+    margin: 10px 0; 
+    border: 2px solid #555;
+    background-color: #f7e6c4;
+    text-align: center;
+    align-self: center;
+}
+
+.hand-pieces {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 5px;
+}
+
+.hand-piece {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+    margin: 2px;
+    padding: 2px;
+    border: 1px solid #777;
+    background-color: #ffffff;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    user-select: none;
+}
+
+/* 持ち駒選択時のスタイル */
+.hand-piece.selected {
+    border: 2px solid red; 
+    box-shadow: 0 0 5px rgba(255, 0, 0, 0.5);
+    background-color: #ffcc66; 
+}
+
+/* --- 盤面反転のためのスタイル (P2視点) --- */
+/* 💡 body全体の反転は廃止 */
+
+/* 1. P2の場合、将棋盤全体を反転 */
+#shogi-board.p2-view-board {
+    transform: rotate(180deg);
+}
+
+/* 2. P2視点で、P1とP2の駒の回転を元に戻す */
+#shogi-board.p2-view-board .piece.player1 {
+    transform: rotate(360deg); 
+}
+
+#shogi-board.p2-view-board .piece.player2 {
+    transform: rotate(540deg); 
+}
+
+/* 3. 持ち駒エリアをそれぞれ個別に反転（盤面と逆方向に回転）*/
+#hand-p1.hand-area, #hand-p2.hand-area {
+    transform: rotate(180deg);
+}
+
+/* 4. 持ち駒の文字の回転を元に戻す */
+#hand-p2.hand-area .hand-piece.player2 {
+    transform: rotate(0deg); 
+}
+
+#hand-p1.hand-area .hand-piece.player1 {
+    transform: rotate(0deg); 
+}
+
+/* --- 情報表示エリアのスタイル --- */
+#info-display {
+    width: 366px; 
+    text-align: center;
+    margin-top: 10px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+#info-display p {
+    margin: 0;
+    font-size: 16px;
+}
+
+/* --- 投了ボタンのスタイル --- */
+#game-controls {
+    margin-top: 15px;
+}
+
+#resign-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #f44336;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#resign-button:disabled {
+    background-color: #ccc;
+    cursor: default;
+}
+
+/* --- 成り選択ダイアログのスタイル --- */
+#promotion-dialog {
+    border: 2px solid #333; 
+    position: fixed; 
+    top: 50%; 
+    left: 50%; 
+    transform: translate(-50%, -50%); /* 中央配置 */
+    background: white; 
+    padding: 20px; 
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2); 
+    z-index: 1000;
+}
+/* style.css (追加/修正箇所のみ) */
+
+/* --- 投了ボタンのスタイル --- */
+#game-controls {
+    margin-top: 15px;
+    /* ボタンを横に並べるためにFlexboxを使用 */
+    display: flex;
+    gap: 10px; /* ボタン間のスペース */
+    justify-content: center;
+}
+
+#resign-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #f44336;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* 💡 ロビーに戻るボタンのスタイル */
+#back-to-lobby-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #007bff; /* 青色 */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#resign-button:disabled {
+    background-color: #ccc;
+    cursor: default;
+}

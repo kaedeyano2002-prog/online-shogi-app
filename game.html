@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>オンライン将棋 - 対局中</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f4f4; margin: 0; padding: 20px; display: flex; justify-content: center; }
+        .game-container { 
+            display: grid;
+            /* 持ち駒エリア、盤、持ち駒エリアを配置 */
+            grid-template-areas: 
+                "opponent-hand board player-info"
+                "board-area board board-area"
+                "player-hand board player-info";
+            grid-template-columns: 200px 450px 200px; /* 盤面を中央に配置 */
+            gap: 20px;
+            max-width: 900px;
+            width: 100%;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 盤面エリアの基本スタイル */
+        #shogi-board { 
+            grid-area: board; 
+            display: grid;
+            grid-template-columns: repeat(9, 50px);
+            grid-template-rows: repeat(9, 50px);
+            border: 3px solid #6b4c3e;
+            background-color: #ffc; /* 将棋盤の色 */
+            margin: 0 auto;
+        }
+        
+        /* 盤上のセル */
+        .square {
+            width: 50px;
+            height: 50px;
+            border: 1px solid #6b4c3e;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        /* 持ち駒エリア */
+        #opponent-hand, #player-hand {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+        }
+
+        #opponent-hand { grid-area: opponent-hand; text-align: right; }
+        #player-hand { grid-area: player-hand; }
+
+        .hand-piece {
+            display: inline-block;
+            margin: 5px;
+            padding: 5px 10px;
+            border: 1px solid #999;
+            cursor: pointer;
+            border-radius: 3px;
+            background-color: #e0e0e0;
+        }
+        
+        /* 情報表示エリア */
+        .info-panel { 
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+
+        /* 時計エリア */
+        #time-panel {
+            text-align: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #333;
+            background-color: #e9ecef;
+        }
+        .active-turn { background-color: #d4edda; border-color: #c3e6cb; }
+
+        /* 勝敗メッセージ */
+        #game-message {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            display: none; /* 初期状態は非表示 */
+            justify-content: center;
+            align-items: center;
+            font-size: 3em;
+            text-align: center;
+            z-index: 2000;
+        }
+
+        /* 辞退ボタン */
+        #resign-button {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin-top: 20px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        #resign-button:hover { background-color: #c82333; }
+        
+        /* P2（対面側）の駒の向き調整用クラス */
+        .p2-piece {
+            transform: rotate(180deg);
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="game-container">
+        
+        <div class="info-panel" id="opponent-info-panel" style="grid-area: player-info; text-align: right;">
+            <p>対戦相手: <span id="opponent-name">...</span></p>
+            <div id="opponent-time" class="time-panel">00:00</div>
+        </div>
+
+        <div id="opponent-hand">
+            <h2>相手の持ち駒</h2>
+            <div id="opponent-hand-pieces"></div>
+        </div>
+
+        <div id="shogi-board">
+            </div>
+
+        <div id="player-hand">
+            <h2>自分の持ち駒</h2>
+            <div id="player-hand-pieces"></div>
+        </div>
+        
+        <div class="info-panel" id="my-info-panel" style="grid-area: player-info;">
+            <p>自分の名前: <span id="my-name">...</span></p>
+            <div id="my-time" class="time-panel active-turn">00:00</div>
+            <button id="resign-button">投了 (Resign)</button>
+        </div>
+        
+    </div>
+
+    <div id="game-message">
+        <span id="result-text"></span>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="game.js"></script>
+    </body>
+</html>
